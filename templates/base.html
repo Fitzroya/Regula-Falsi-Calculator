@@ -9,41 +9,36 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
-        <span class="material-icons">menu</span>
-    </button>
-
     <div class="app-container">
-        <!-- Sidebar Navigation -->
+        <!-- Collapsible Sidebar - collapses to 70px, expands on hover -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
                     <span class="material-icons">functions</span>
-                    <h2>Regula Falsi</h2>
+                    <h2 class="logo-text">Regula Falsi</h2>
                 </div>
-                <p class="logo-sub">False Position Method</p>
+                <p class="logo-sub logo-text">False Position Method</p>
             </div>
             
             <nav class="sidebar-nav">
                 <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
-                    <span class="material-icons">dashboard</span>
-                    <span>Dashboard</span>
+                    <span class="material-icons">description</span>
+                    <span class="nav-text">Discussion</span>
                 </a>
                 <a href="{{ url_for('examples') }}" class="nav-item {% if request.endpoint == 'examples' %}active{% endif %}">
                     <span class="material-icons">school</span>
-                    <span>Worked Examples</span>
+                    <span class="nav-text">Worked Examples</span>
                 </a>
                 <a href="{{ url_for('calculator') }}" class="nav-item {% if request.endpoint == 'calculator' %}active{% endif %}">
                     <span class="material-icons">calculate</span>
-                    <span>Calculator</span>
+                    <span class="nav-text">Calculator</span>
                 </a>
             </nav>
             
             <div class="sidebar-footer">
                 <div class="version">
                     <span class="material-icons">science</span>
-                    <span>Numerical Methods</span>
-                    <span>Anthony Paduala CPE2D</span>
+                    <span class="version-text">Numerical Methods v1.0</span>
                 </div>
             </div>
         </aside>
@@ -55,19 +50,7 @@
     </div>
     
     <script>
-        // Mobile sidebar toggle
-       function toggleSidebar() {
-    document.querySelector('.app-container').classList.toggle('sidebar-open');
-}
-
-// Close sidebar when clicking on mobile nav item
-document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => {
-        if (window.innerWidth <= 768) {
-            document.querySelector('.app-container').classList.remove('sidebar-open');
-        }
-    });
-});
+        // No JavaScript needed - pure CSS hover effect
     </script>
 </body>
 </html>
