@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="dashboard-header">
+    <h1>Regula Falsi Method</h1>
+    <p>Root-finding algorithm using linear interpolation (False Position Method)</p>
+</div>
+
+<!-- Mathematical Discussion Card -->
+<div class="content-card">
+    <div class="card-header">
+        <span class="material-icons">description</span>
+        <h2>Mathematical Discussion</h2>
+    </div>
+    <div class="card-body">
+        <p>The <strong>Regula Falsi (False Position Method)</strong> is a bracketing numerical algorithm used to find the roots of a continuous, nonlinear equation \(f(x) = 0\). It improves upon the Bisection method by using proportional linear interpolation between two points rather than a simple midpoint.</p>
+        
+        <h3>Formula</h3>
+        <div class="formula-box">
+            \[ c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} \]
+        </div>
+        
+        <h3>Error Formula</h3>
+        <div class="formula-box">
+            \[ \varepsilon_a = \left| \frac{c_{\text{new}} - c_{\text{old}}}{c_{\text{new}}} \right| \times 100\% \]
+        </div>
+        
+        <h3>Convergence</h3>
+        <p>The Regula Falsi method exhibits linear convergence, which is faster than the bisection method but slower than Newton-Raphson. The method is guaranteed to converge when a sign change exists in the initial interval.</p>
+    </div>
+</div>
+
+<!-- Quick Navigation Cards -->
+<div class="action-grid">
+    <a href="{{ url_for('examples') }}" class="action-card">
+        <span class="material-icons">school</span>
+        <h3>View Examples</h3>
+        <p>Step-by-step worked examples with detailed solutions</p>
+        <span class="action-arrow">→</span>
+    </a>
+    
+    <a href="{{ url_for('calculator') }}" class="action-card">
+        <span class="material-icons">calculate</span>
+        <h3>Try Calculator</h3>
+        <p>Interactive calculator with your own functions</p>
+        <span class="action-arrow">→</span>
+    </a>
+</div>
+{% endblock %}

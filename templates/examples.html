@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <div class="header-icon">
+        <span class="material-icons">school</span>
+    </div>
+    <div>
+        <h1>Worked Examples</h1>
+        <p>Step-by-step solutions with detailed calculations</p>
+    </div>
+</div>
+
+<!-- Example 1 -->
+<div class="content-card">
+    <div class="card-header">
+        <span class="material-icons">functions</span>
+        <h2>Example 1: f(x) = x² - 4</h2>
+    </div>
+    <div class="card-body">
+        <div class="example-meta">
+            <span class="meta-tag">Interval: [1, 3]</span>
+            <span class="meta-tag">Tolerance: 5%</span>
+            <span class="meta-tag">True Root: x = 2</span>
+        </div>
+        
+        <h3>Step-by-Step Solution:</h3>
+        
+        <div class="step">
+            <h4>Step 1: Check if interval brackets a root</h4>
+            <p>\(f(a) = f(1) = (1)^2 - 4 = 1 - 4 = -3\)</p>
+            <p>\(f(b) = f(3) = (3)^2 - 4 = 9 - 4 = 5\)</p>
+            <p>Since \(f(1) \cdot f(3) = (-3)(5) = -15 < 0\), a root exists in \([1, 3]\). </p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 1:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{1 \cdot 5 - 3 \cdot (-3)}{5 - (-3)} = \frac{5 + 9}{8} = \frac{14}{8} = 1.6\)</p>
+            <p>\(f(c) = (1.6)^2 - 4 = 2.56 - 4 = -1.44\)</p>
+            <p>Check sign: \(f(a) \cdot f(c) = (-3)(-1.44) = 4.32 > 0\) → root is between \(c\) and \(b\)</p>
+            <p>Update: \(a = c = 1.6\), \(b = 3\)</p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 2:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{1.6 \cdot 5 - 3 \cdot (-1.44)}{5 - (-1.44)} = \frac{8 + 4.32}{6.44} = \frac{12.32}{6.44} = 1.857\)</p>
+            <p>\(f(c) = (1.857)^2 - 4 = 3.448 - 4 = -0.551\)</p>
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{1.857 - 1.6}{1.857}\right| \times 100\% = 13.84\%\)</p>
+            <p>Update: \(a = 1.857\), \(b = 3\)</p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 3:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{1.857 \cdot 5 - 3 \cdot (-0.551)}{5 - (-0.551)} = \frac{9.285 + 1.653}{5.551} = \frac{10.938}{5.551} = 1.952\)</p>
+            <p>\(f(c) = (1.952)^2 - 4 = 3.810 - 4 = -0.189\)</p>
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{1.952 - 1.857}{1.952}\right| \times 100\% = 4.87\%\)</p>
+            <p>\(\varepsilon_a = 4.87\% < 5\%\) → <strong>Converged</strong></p>
+        </div>
+        
+        <h3>Iteration Summary Table:</h3>
+        <div class="table-wrapper">
+            <table class="iteration-table">
+                <thead>
+                    <tr><th>Iter</th><th>a</th><th>b</th><th>f(a)</th><th>f(b)</th><th>c</th><th>f(c)</th><th>εₐ (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>1</td><td>3</td><td>-3</td><td>5</td><td>1.6</td><td>-1.44</td><td>—</td></tr>
+                    <tr><td>2</td><td>1.6</td><td>3</td><td>-1.44</td><td>5</td><td>1.857</td><td>-0.551</td><td>13.84%</td></tr>
+                    <tr><td>3</td><td>1.857</td><td>3</td><td>-0.551</td><td>5</td><td>1.952</td><td>-0.189</td><td>4.87%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p> <strong>Result:</strong> After 3 iterations, \(c \approx 1.952\) with relative error 4.87% &lt; 5% tolerance.</p>
+    </div>
+</div>
+
+<!-- Example 2 - FULL DETAILED VERSION -->
+<div class="content-card">
+    <div class="card-header">
+        <span class="material-icons">functions</span>
+        <h2>Example 2: f(x) = cos(x) - x</h2>
+    </div>
+    <div class="card-body">
+        <div class="example-meta">
+            <span class="meta-tag">Interval: [0, 1]</span>
+            <span class="meta-tag">Tolerance: 0.1%</span>
+            <span class="meta-tag">True Root: x ≈ 0.739085</span>
+        </div>
+        
+        <h3>Step-by-Step Solution:</h3>
+        
+        <div class="step">
+            <h4>Step 1: Check if interval brackets a root</h4>
+            <p>\(f(a) = f(0) = \cos(0) - 0 = 1 - 0 = 1\)</p>
+            <p>\(f(b) = f(1) = \cos(1) - 1 = 0.5403 - 1 = -0.4597\)</p>
+            <p>Since \(f(0) \cdot f(1) = (1)(-0.4597) = -0.4597 < 0\), a root exists in \([0, 1]\). </p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 1:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{0 \cdot (-0.4597) - 1 \cdot (1)}{-0.4597 - 1} = \frac{0 - 1}{-1.4597} = \frac{-1}{-1.4597} = 0.684\)</p>
+            <p>\(f(c) = \cos(0.684) - 0.684 = 0.774 - 0.684 = 0.090\)</p>
+            <p>Check sign: \(f(a) \cdot f(c) = (1)(0.090) = 0.090 > 0\) → root is between \(c\) and \(b\)</p>
+            <p>Update: \(a = c = 0.684\), \(b = 1\)</p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 2:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{0.684 \cdot (-0.4597) - 1 \cdot (0.090)}{-0.4597 - 0.090} = \frac{-0.314 - 0.090}{-0.5497} = \frac{-0.404}{-0.5497} = 0.735\)</p>
+            <p>\(f(c) = \cos(0.735) - 0.735 = 0.745 - 0.735 = 0.010\)</p>
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{0.735 - 0.684}{0.735}\right| \times 100\% = 6.94\%\)</p>
+            <p>Update: \(a = 0.735\), \(b = 1\)</p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 3:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{0.735 \cdot (-0.4597) - 1 \cdot (0.010)}{-0.4597 - 0.010} = \frac{-0.338 - 0.010}{-0.4697} = \frac{-0.348}{-0.4697} = 0.741\)</p>
+            <p>\(f(c) = \cos(0.741) - 0.741 = 0.739 - 0.741 = -0.002\)</p>
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{0.741 - 0.735}{0.741}\right| \times 100\% = 0.81\%\)</p>
+            <p>Since \(f(c) < 0\) and \(f(b) < 0\), update: \(b = 0.741\), \(a = 0.735\)</p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 4:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{0.735 \cdot (-0.002) - 0.741 \cdot (0.010)}{-0.002 - 0.010} = \frac{-0.00147 - 0.00741}{-0.012} = \frac{-0.00888}{-0.012} = 0.740\)</p>
+            <p>\(f(c) = \cos(0.740) - 0.740 = 0.739 - 0.740 = -0.001\)</p>
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{0.740 - 0.741}{0.740}\right| \times 100\% = 0.14\%\)</p>
+            <p>Update: \(b = 0.740\), \(a = 0.735\)</p>
+        </div>
+        
+        <div class="step">
+            <h4>Iteration 5:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)} = \frac{0.735 \cdot (-0.001) - 0.740 \cdot (0.010)}{-0.001 - 0.010} = \frac{-0.000735 - 0.0074}{-0.011} = \frac{-0.008135}{-0.011} = 0.7396\)</p>
+            <p>\(f(c) = \cos(0.7396) - 0.7396 = 0.7395 - 0.7396 = -0.0001\)</p>
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{0.7396 - 0.740}{0.7396}\right| \times 100\% = 0.054\%\)</p>
+            <p>\(\varepsilon_a = 0.054\% < 0.1\%\) → <strong>Converged!</strong></p>
+        </div>
+        
+        <h3>Iteration Summary Table:</h3>
+        <div class="table-wrapper">
+            <table class="iteration-table">
+                <thead>
+                    <tr><th>Iter</th><th>a</th><th>b</th><th>f(a)</th><th>f(b)</th><th>c</th><th>f(c)</th><th>εₐ (%)</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>-0.4597</td><td>0.684</td><td>0.090</td><td>—</td></tr>
+                    <tr><td>2</td><td>0.684</td><td>1</td><td>0.090</td><td>-0.4597</td><td>0.735</td><td>0.010</td><td>6.94%</td></tr>
+                    <tr><td>3</td><td>0.735</td><td>1</td><td>0.010</td><td>-0.4597</td><td>0.741</td><td>-0.002</td><td>0.81%</td></tr>
+                    <tr><td>4</td><td>0.735</td><td>0.741</td><td>0.010</td><td>-0.002</td><td>0.740</td><td>-0.001</td><td>0.14%</td></tr>
+                    <tr><td>5</td><td>0.735</td><td>0.740</td><td>0.010</td><td>-0.001</td><td>0.7396</td><td>-0.0001</td><td>0.054%</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p> <strong>Result:</strong> After 5 iterations, \(c \approx 0.7396\) with relative error 0.054% &lt; 0.1% tolerance.</p>
+    </div>
+</div>
+{% endblock %}

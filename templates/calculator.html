@@ -1,0 +1,238 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <div class="header-icon">
+        <span class="material-icons">calculate</span>
+    </div>
+    <div>
+        <h1>Regula Falsi Calculator</h1>
+        <p>Enter your own function and find roots with Regula Falsi</p>
+    </div>
+</div>
+
+<div class="content-card">
+    <div class="card-header">
+        <span class="material-icons">settings</span>
+        <h2>Parameters</h2>
+    </div>
+    <div class="card-body">
+        <form method="POST" action="{{ url_for('calculator') }}">
+            <div class="form-group">
+                <label>Function f(x) =</label>
+                <input type="text" name="function" value="{{ form_data.function }}" required>
+                <small>Examples: x**2 - 4, cos(x) - x, x**3 - x - 2, exp(-x) - x</small>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>a (left endpoint)</label>
+                    <input type="number" name="a" value="{{ form_data.a }}" step="any" required>
+                </div>
+                <div class="form-group">
+                    <label>b (right endpoint)</label>
+                    <input type="number" name="b" value="{{ form_data.b }}" step="any" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Max Iterations</label>
+                    <input type="number" name="max_iter" value="{{ form_data.max_iter }}" required>
+                </div>
+                <div class="form-group">
+                    <label>Error Tolerance (%)</label>
+                    <input type="number" name="tolerance" value="{{ form_data.tolerance }}" step="any" required>
+                    <small>Stop when approximate relative error &lt; this value (e.g., 0.05 = 5%)</small>
+                </div>
+            </div>
+            
+            <div class="syntax-guide">
+    <div class="syntax-guide-header">
+        <span class="material-icons">code</span>
+        <span>Syntax Guide for Inputting Values</span>
+    </div>
+    <div class="syntax-guide-content">
+        <div class="syntax-rule">
+            <code>x**2</code>
+            <span>→ Power (x squared)</span>
+        </div>
+        <div class="syntax-rule">
+            <code>exp(x)</code>
+            <span>→ Exponential (e raised to x)</span>
+        </div>
+        <div class="syntax-rule">
+            <code>x-2e^x</code> → <code>x-2*exp(x)</code>
+            <span>→ Natural math input</span>
+        </div>
+        <div class="syntax-rule">
+            <code>sin(x)</code>, <code>cos(x)</code>, <code>tan(x)</code>
+            <span>→ Trigonometric functions</span>
+        </div>
+        <div class="syntax-rule">
+            <code>log(x)</code>, <code>ln(x)</code>
+            <span>→ Natural logarithm</span>
+        </div>
+        <div class="syntax-rule">
+            <code>sqrt(x)</code>
+            <span>→ Square root</span>
+        </div>
+    </div>
+    <div class="syntax-example">
+        <strong>💡 Example:</strong>
+        <code>x-2e^-x</code> → <code>x-2*exp(-x)</code>
+    </div>
+</div>
+
+            <button type="submit" class="btn-primary">
+                <span class="material-icons">play_arrow</span>
+                Calculate Root
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Quick Examples - MOVED HERE (below parameters, before results) -->
+<div class="presets-card">
+    <div class="card-header">
+        <span class="material-icons">bolt</span>
+        <h2>Quick Examples</h2>
+    </div>
+    <div class="card-body">
+        <div class="preset-buttons">
+            <button onclick="setExample1()" class="preset-btn">x² - 4</button>
+            <button onclick="setExample2()" class="preset-btn">cos(x) - x</button>
+            <button onclick="setExample3()" class="preset-btn">x³ - x - 2</button>
+        </div>
+    </div>
+</div>
+
+{% if error %}
+<div class="error-card">
+    <span class="material-icons">error</span>
+    <div>
+        <h3>Error</h3>
+        <p>{{ error }}</p>
+    </div>
+</div>
+{% endif %}
+
+{% if result %}
+<div class="results-card">
+    <div class="card-header">
+        <span class="material-icons">analytics</span>
+        <h2>Results</h2>
+    </div>
+    <div class="card-body">
+        <div class="results-grid">
+            <div class="result-item">
+                <span class="result-label">Approximate Root:</span>
+                <span class="result-value">{{ "%.6f"|format(result.root) }}</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">f(root):</span>
+                <span class="result-value">{{ "%.6f"|format(result.f_root) }}</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Final Relative Error:</span>
+                <span class="result-value">{{ "%.6f"|format(result.final_error) }}%</span>
+            </div>
+            <div class="result-item">
+                <span class="result-label">Iterations:</span>
+                <span class="result-value">{{ result.iterations }}</span>
+            </div>
+        </div>
+        <p class="status-message">{{ result.message }}</p>
+    </div>
+</div>
+
+{% if step_by_step %}
+<div class="content-card">
+    <div class="card-header">
+        <span class="material-icons">format_list_numbered</span>
+        <h2>Step-by-Step Solution</h2>
+    </div>
+    <div class="card-body">
+        <div class="step">
+            <h4>Step 1: Check if interval brackets a root</h4>
+            <p>\(f(a) = f({{ form_data.a }}) = {{ step_by_step.fa_calc }}\)</p>
+            <p>\(f(b) = f({{ form_data.b }}) = {{ step_by_step.fb_calc }}\)</p>
+            <p>Since \(f(a) \cdot f(b) = {{ step_by_step.sign_check }} < 0\), a root exists in [{{ form_data.a }}, {{ form_data.b }}]. </p>
+        </div>
+        
+        {% for iter in step_by_step.iterations %}
+        <div class="step">
+            <h4>Iteration {{ iter.num }}:</h4>
+            <p>\(c = \frac{a \cdot f(b) - b \cdot f(a)}{f(b) - f(a)}\)</p>
+            <p>\(c = \frac{ {{ iter.a|round(6) }} \cdot ({{ iter.fb|round(6) }}) - {{ iter.b|round(6) }} \cdot ({{ iter.fa|round(6) }}) }{ {{ iter.fb|round(6) }} - ({{ iter.fa|round(6) }}) }\)</p>
+            <p>\(c = \frac{ {{ iter.formula_a_times_fb|round(6) }} - {{ iter.formula_b_times_fa|round(6) }} }{ {{ iter.formula_denominator|round(6) }} } = \frac{ {{ iter.formula_numerator|round(6) }} }{ {{ iter.formula_denominator|round(6) }} } = {{ iter.c|round(6) }}\)</p>
+            <p>\(f(c) = {{ iter.fc_calc }} = {{ iter.fc|round(6) }}\)</p>
+            {% if iter.error %}
+            <p>Relative Error: \(\varepsilon_a = \left|\frac{ {{ iter.c|round(6) }} - {{ iter.c_prev|round(6) }} }{ {{ iter.c|round(6) }} }\right| \times 100\% = {{ iter.error|round(4) }}%\)</p>
+            {% endif %}
+            <p>{{ iter.update_message }}</p>
+            {% if iter.converged %}
+            <p><strong>✓ Converged! ε_a = {{ iter.error|round(4) }}% &lt; {{ tolerance_percent }}% tolerance</strong></p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+{% if iterations %}
+<div class="content-card">
+    <div class="card-header">
+        <span class="material-icons">table_chart</span>
+        <h2>Iteration History</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-wrapper">
+            <table class="iteration-table">
+                <thead>
+                    <tr><th>Iter</th><th>a</th><th>b</th><th>f(a)</th><th>f(b)</th><th>c</th><th>f(c)</th><th>εₐ(%)</th></tr>
+                </thead>
+                <tbody>
+                    {% for it in iterations %}
+                    <tr>
+                        <td>{{ it.iteration }}</td>
+                        <td>{{ "%.6f"|format(it.a) }}</td>
+                        <td>{{ "%.6f"|format(it.b) }}</td>
+                        <td>{{ "%.6f"|format(it.fa) }}</td>
+                        <td>{{ "%.6f"|format(it.fb) }}</td>
+                        <td>{{ "%.6f"|format(it.xr) }}</td>
+                        <td>{{ "%.6f"|format(it.fxr) }}</td>
+                        <td>{% if it.error %}{{ "%.4f"|format(it.error) }}%{% else %}—{% endif %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endif %}
+
+<script>
+function setExample1() {
+    document.querySelector('input[name="function"]').value = 'x**2 - 4';
+    document.querySelector('input[name="a"]').value = '1';
+    document.querySelector('input[name="b"]').value = '3';
+    document.querySelector('input[name="tolerance"]').value = '0.05';
+}
+
+function setExample2() {
+    document.querySelector('input[name="function"]').value = 'cos(x) - x';
+    document.querySelector('input[name="a"]').value = '0';
+    document.querySelector('input[name="b"]').value = '1';
+    document.querySelector('input[name="tolerance"]').value = '0.001';
+}
+
+function setExample3() {
+    document.querySelector('input[name="function"]').value = 'x**3 - x - 2';
+    document.querySelector('input[name="a"]').value = '1';
+    document.querySelector('input[name="b"]').value = '2';
+    document.querySelector('input[name="tolerance"]').value = '0.001';
+}
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Regula Falsi - Numerical Methods Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <button class="mobile-menu-toggle" onclick="toggleSidebar()">
+        <span class="material-icons">menu</span>
+    </button>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <span class="material-icons">functions</span>
+                    <h2>Regula Falsi</h2>
+                </div>
+                <p class="logo-sub">False Position Method</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+                    <span class="material-icons">dashboard</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url_for('examples') }}" class="nav-item {% if request.endpoint == 'examples' %}active{% endif %}">
+                    <span class="material-icons">school</span>
+                    <span>Worked Examples</span>
+                </a>
+                <a href="{{ url_for('calculator') }}" class="nav-item {% if request.endpoint == 'calculator' %}active{% endif %}">
+                    <span class="material-icons">calculate</span>
+                    <span>Calculator</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="version">
+                    <span class="material-icons">science</span>
+                    <span>Numerical Methods</span>
+                    <span>Anthony Paduala CPE2D</span>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <script>
+        // Mobile sidebar toggle
+       function toggleSidebar() {
+    document.querySelector('.app-container').classList.toggle('sidebar-open');
+}
+
+// Close sidebar when clicking on mobile nav item
+document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+            document.querySelector('.app-container').classList.remove('sidebar-open');
+        }
+    });
+});
+    </script>
+</body>
+</html>
